@@ -3,8 +3,13 @@
 
 import numpy as np
 from random import randint
-
+import matplotlib.pyplot as plt
+import os.path
 def next_cell(x,y, direction):
+    """
+    Given a position it outputs the next cell given the direction
+    :return: position of the next cell
+    """
     if direction==1:
         x-=1
     elif direction==2:
@@ -26,7 +31,7 @@ def left_direction(direction):
     else:
         print("Error in left direction")
         exit()
-    return l
+
 def right_direction(direction):
     if direction>1:
         return direction-1
@@ -35,24 +40,22 @@ def right_direction(direction):
     else:
         print("Error in right direction")
         exit()
-    return
 
-def move():
-    global m,x,y,direction,win
+def move(x,y,direction,win,m):
     direction=right_direction(direction)
     nx,ny=next_cell(x,y,direction)
     cell=m[nx,ny]
     print(x, y, nx, ny, cell)
     if cell==4:
         win=True
-        return
+        return x,y,direction,win
     elif cell==0:
         #can move here
         nnx,nny=next_cell(nx,ny,direction)
-        m[x,y]=0
+        m[x,y]=1
         m[nnx, nny] = 2
         x,y=nnx,nny
-        return
+        return x,y,direction,win
     else:
         i=0
         while(i<3):
@@ -62,14 +65,14 @@ def move():
             #print(x, y, nx, ny, cell)
             if cell==4:
                 win=True
-                return
+                return x, y, direction, win
             elif cell == 0:
                 # can move here
                 nnx,nny=next_cell(nx,ny,direction)
-                m[x, y] = 0
+                m[x, y] = 1
                 m[nnx, nny] = 2
                 x, y = nnx, nny
-                return
+                return x,y,direction,win
             else:
                 i+=1
         #no possible way, go back
@@ -100,7 +103,6 @@ def generate_spawn():
     return
 
 def get_maze():
-    global size,x,y,direction
     m=np.loadtxt("maze2.txt")
     #search for start
     found=False
@@ -136,23 +138,35 @@ def get_maze():
     elif y==size-1:
         direction=2
 
-    return m
+    nx, ny = next_cell(x, y, direction)
+    m[nx, ny] = 2
+    x, y = nx, ny
+    return size,x,y,direction,m
 
 win=False
 
-size,x,y,direction=0,0,0,0
-
 #get maze
-m=get_maze()
-nx,ny=next_cell(x,y,direction)
-m[nx,ny]=2
-x,y=nx,ny
+size,x,y,direction,m=get_maze()
+
 print(m)
+
 indice=0
 while(not win):
     #try to move to the next cell
-    move()
+    x,y,direction,win=move(x,y,direction,win,m)
     indice+=1
     print(m)
     #now m, position and direction are changed
 print(indice)
+
+plt.figure(figsize=(5, 5))
+plt.imshow(m, cmap=plt.cm.binary, interpolation='nearest')
+plt.xticks([]), plt.yticks([])
+
+base_name="maze"
+number=0
+ext_name=".png"
+while(os.path.exists(base_name+str(number)+ext_name)):
+    number+=1
+plt.savefig(base_name+str(number)+ext_name)
+#plt.show()
