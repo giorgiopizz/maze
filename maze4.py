@@ -217,7 +217,7 @@ def initialize(size):
     return x,y,m
 
 #8 and 9 are walls, 1 is unvisited, 2 is current position, 3 is start, 4 arrival
-size=301
+size=501
 stack = []
 x,y,m=initialize(size)
 # although there are size**2 cells, only (size//2)^2 are usable and being spawned in a point means you
