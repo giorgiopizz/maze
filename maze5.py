@@ -45,7 +45,7 @@ def move(x,y,direction,win,m):
     direction=right_direction(direction)
     nx,ny=next_cell(x,y,direction)
     cell=m[nx,ny]
-    print(x, y, nx, ny, cell)
+    #print(x, y, nx, ny, cell)
     if cell==4:
         win=True
         return x,y,direction,win
@@ -148,7 +148,7 @@ def solve_maze(folder):
     win=False
     #get maze
     size,x,y,direction,m=get_maze()
-    print(m)
+    #print(m)
     indice=0
     while(not win):
         #try to move to the next cell
