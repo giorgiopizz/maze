@@ -1,0 +1,1 @@
+ricordarsi che per avere 501 come lato bisogna mettere minimo 30,30 come figsize

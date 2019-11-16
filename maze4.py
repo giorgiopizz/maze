@@ -40,7 +40,7 @@ def right_direction(direction):
         print("Error in right direction")
         exit()
 
-def generate_spawn(x,y,direction):
+def generate_spawn(x,y,direction,size):
     """
     It generates a spawn point and an arrival point
     :return:
@@ -76,7 +76,7 @@ def generate_spawn(x,y,direction):
         print("Error in spawning")
     return x,y,direction
 
-def neighbours(x,y,direction):
+def neighbours(x,y,direction,size):
     """
     It checks if there is a neighbour in a given direction or if it has reached the matrix bounds
     :return: bool
@@ -105,7 +105,7 @@ def remove_wall(x,y,direction,m):
     m[nx,ny]=0
     return
 
-def check_neighbours(x,y,unvisited,m):
+def check_neighbours(x,y,unvisited,m,size, stack):
     """
     This function is the core of the program.
     It checks in the four directions if there is an unvisited cell, if there are two or more
@@ -118,7 +118,7 @@ def check_neighbours(x,y,unvisited,m):
     found = False
     for i in range(1,5):
         #looping 3 times
-        if neighbours(x,y,i):
+        if neighbours(x,y,i,size):
             nx,ny=next_cell(x,y,i)
             nnx,nny= next_cell(nx,ny,i)
             cell=m[nnx,nny]
@@ -150,7 +150,7 @@ def check_neighbours(x,y,unvisited,m):
             last = stack.pop()
             for i in range(1, 5):
                 # looping 4 times
-                if neighbours(last[0], last[1], i):
+                if neighbours(last[0], last[1], i, size):
                     nx, ny = next_cell(last[0], last[1], i)
                     nnx, nny = next_cell(nx, ny, i)
                     cell = m[nnx, nny]
@@ -195,7 +195,7 @@ def initialize(size):
     # direction can be up, left, down, right(1,2,3,4)
     direction = 0
     # first time generating spawn is used to generate the arrival point
-    x, y, direction = generate_spawn(x, y, direction)
+    x, y, direction = generate_spawn(x, y, direction,size)
     # let's set the exit with 4
     m[x, y] = 4
     nx, ny = next_cell(x, y, direction)
@@ -203,11 +203,11 @@ def initialize(size):
     m[nx, ny] = -1
     ax, ay = x, y
     # now the spawn point is generated
-    x, y, direction = generate_spawn(x, y, direction)
+    x, y, direction = generate_spawn(x, y, direction,size)
     nx, ny = next_cell(x, y, direction)
     # check if arrival and start are the same or if the cell in front of arrival and start is the same
     while (ax == x and ay == y) or m[nx, ny] == -1:
-        x, y, direction = generate_spawn(x, y, direction)
+        x, y, direction = generate_spawn(x, y, direction,size)
         nx, ny = next_cell(x, y, direction)
     # setting the start point
     m[x, y] = 3
@@ -216,26 +216,23 @@ def initialize(size):
     m[x, y] = 2
     return x,y,m
 
-#8 and 9 are walls, 1 is unvisited, 2 is current position, 3 is start, 4 arrival
-size=21
-stack = []
-x,y,m=initialize(size)
-# although there are size**2 cells, only (size//2)^2 are usable and being spawned in a point means you
-# start with already one cell visited
-unvisited = (size // 2) ** 2 - 1
+def create_maze(size):
+    #8 and 9 are walls, 1 is unvisited, 2 is current position, 3 is start, 4 arrival
+    stack = []
+    x,y,m=initialize(size)
+    # although there are size**2 cells, only (size//2)^2 are usable and being spawned in a point means you
+    # start with already one cell visited
+    unvisited = (size // 2) ** 2 - 1
 
-while(unvisited>0):
-    #move to the next cell
-    x,y,unvisited=check_neighbours(x,y,unvisited,m)
-    print(m)
-    #now x,y unvisited and m are changed
+    while(unvisited>0):
+        #move to the next cell
+        x,y,unvisited=check_neighbours(x,y,unvisited,m, size,stack)
+        #now x,y unvisited and m are changed
 
-#it's useless to know the current position after the generation
-m[x,y]=0
+    #it's useless to know the current position after the generation
+    m[x,y]=0
 
-np.savetxt("maze2.txt",m)
+    np.savetxt("maze2.txt",m)
 
-# plt.figure(figsize=(10, 5))
-# plt.imshow(m, cmap=plt.cm.binary, interpolation='nearest')
-# plt.xticks([]), plt.yticks([])
-# plt.show()
+if __name__=="__main__":
+    create_maze(21)

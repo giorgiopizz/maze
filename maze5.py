@@ -143,30 +143,30 @@ def get_maze():
     x, y = nx, ny
     return size,x,y,direction,m
 
-win=False
 
-#get maze
-size,x,y,direction,m=get_maze()
-
-print(m)
-
-indice=0
-while(not win):
-    #try to move to the next cell
-    x,y,direction,win=move(x,y,direction,win,m)
-    indice+=1
+def solve_maze(folder):
+    win=False
+    #get maze
+    size,x,y,direction,m=get_maze()
     print(m)
-    #now m, position and direction are changed
-print(indice)
+    indice=0
+    while(not win):
+        #try to move to the next cell
+        x,y,direction,win=move(x,y,direction,win,m)
+        indice+=1
+        #now m, position and direction are changed
+    print(indice*2)
 
-plt.figure(figsize=(30, 30))
-plt.imshow(m, cmap=plt.cm.binary, interpolation='nearest')
-plt.xticks([]), plt.yticks([])
+    plt.figure(figsize=(30, 30))
+    plt.imshow(m, cmap=plt.cm.binary, interpolation='nearest')
+    plt.xticks([]), plt.yticks([])
+    base_name="maze"
+    number=0
+    ext_name=".png"
+    while(os.path.exists(folder+base_name+str(number)+ext_name)):
+        number+=1
+    plt.savefig(folder+base_name+str(number)+ext_name)
+    return indice*2
 
-base_name="maze"
-number=0
-ext_name=".png"
-while(os.path.exists(base_name+str(number)+ext_name)):
-    number+=1
-plt.savefig(base_name+str(number)+ext_name)
-#plt.show()
+if __name__=="__main__":
+    solve_maze("primo/")
