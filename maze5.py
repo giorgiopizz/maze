@@ -159,7 +159,7 @@ while(not win):
     #now m, position and direction are changed
 print(indice)
 
-plt.figure(figsize=(20, 20))
+plt.figure(figsize=(30, 30))
 plt.imshow(m, cmap=plt.cm.binary, interpolation='nearest')
 plt.xticks([]), plt.yticks([])
 
