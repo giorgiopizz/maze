@@ -5,12 +5,12 @@ from maze5 import *
 import os
 
 if __name__=="__main__":
-    n=100000
+    n=1000
     sum=0
     percorso="primo"
     if not os.path.exists(percorso):
         os.mkdir(percorso)
-    for i in range(5,7,2):
+    for i in range(5,23,2):
         vec=[]
         for l in range(n):
             #creating n maze and solving them
