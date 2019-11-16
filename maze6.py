@@ -10,14 +10,14 @@ if __name__=="__main__":
     percorso="primo"
     if not os.path.exists(percorso):
         os.mkdir(percorso)
-    for i in range(5,23,2):
+    for i in range(71,73,2):
         vec=[]
         for l in range(n):
             #creating n maze and solving them
             create_maze(i)
             j=solve_maze(percorso+"/",str(i))
             vec.append(j)
-            if(l%1000==0):
+            if(l%50==0):
                 sleep(5)
         #saving the n moves
         file=open("dati-"+str(i)+".txt","a")
