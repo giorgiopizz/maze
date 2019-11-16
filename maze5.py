@@ -156,7 +156,7 @@ def solve_maze(folder,subfix):
         indice+=1
         #now m, position and direction are changed
     print(indice*2)
-
+    """
     plt.figure(figsize=(30, 30))
     plt.imshow(m, cmap=plt.cm.binary, interpolation='nearest')
     plt.xticks([]), plt.yticks([])
@@ -167,6 +167,7 @@ def solve_maze(folder,subfix):
         number+=1
     plt.savefig(folder+base_name+"-"+subfix+str(number)+ext_name)
     plt.close()
+    """
     return indice*2
 
 if __name__=="__main__":
