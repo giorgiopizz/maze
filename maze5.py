@@ -144,7 +144,7 @@ def get_maze():
     return size,x,y,direction,m
 
 
-def solve_maze(folder):
+def solve_maze(folder,subfix):
     win=False
     #get maze
     size,x,y,direction,m=get_maze()
@@ -163,10 +163,11 @@ def solve_maze(folder):
     base_name="maze"
     number=0
     ext_name=".png"
-    while(os.path.exists(folder+base_name+str(number)+ext_name)):
+    while(os.path.exists(folder+base_name+"-"+subfix+str(number)+ext_name)):
         number+=1
-    plt.savefig(folder+base_name+str(number)+ext_name)
+    plt.savefig(folder+base_name+"-"+subfix+str(number)+ext_name)
+    plt.close()
     return indice*2
 
 if __name__=="__main__":
-    solve_maze("primo/")
+    solve_maze("primo/","0")

@@ -5,20 +5,22 @@ from maze5 import *
 import os
 
 if __name__=="__main__":
-    vec=[]
-    n=3
+    n=50
     sum=0
     percorso="primo"
     if not os.path.exists(percorso):
         os.mkdir(percorso)
-    for i in range(5,11,2):
+    for i in range(5,11	,2):
+        vec=[]
         for _ in range(n):
+            #creating n maze and solving them
             create_maze(i)
-            j=solve_maze(percorso+"/")
-            sum+=j
-        elm=[i,sum/n]
-        vec.append(elm)
-    file=open("dati.txt","a")
-    for elm in vec:
-        file.write(str(elm[0])+", "+str(elm[1])+"\n")
-    file.close()
+            j=solve_maze(percorso+"/",str(i))
+            vec.append(j)
+        #saving the n moves
+        file=open("dati-"+str(i)+".txt","a")
+        for j in vec:
+            file.write(str(j)+"\n")
+        file.close()
+        
+   
